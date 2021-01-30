@@ -1,27 +1,48 @@
 import './App.css';
 import { Component } from 'react';
-import {mockYear} from './mock-data.js';
-import {useFirebaseApp} from 'reactfire';
 import * as dateFns from 'date-fns';
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      showPopup: false
+      showPopup: false,
+      reminders: []
     }
   }
+
+  componentDidMount(){
+    this.getData()
+  }
+
   togglePopup() {
     this.setState({
       showPopup: !this.state.showPopup
     });
   }
   sendData(formResult){
-    console.log(formResult)
     const newReminderKey = this.props.firebase.database().ref().child('reminders').push().key;
     this.writeReminderData(newReminderKey,formResult.color,formResult.description, formResult.when, formResult.where)
     this.setState({
       showPopup: !this.state.showPopup
+    });
+  }
+  getData(){
+    let DBreminders = [];
+    const remindersRef = this.props.firebase.database().ref('reminders');
+    remindersRef.once('value').then(snapshot => {
+      snapshot.forEach((childSnapshot) => {
+        DBreminders.push({
+          id: childSnapshot.val().id,
+          color: childSnapshot.val().color,
+          when: childSnapshot.val().when,
+          where: childSnapshot.val().where,
+          description: childSnapshot.val().description
+        })
+      })
+      this.setState({
+        reminders: DBreminders
+      })
     });
   }
   writeReminderData(id, color, description, when, where) {
@@ -39,10 +60,9 @@ class App extends Component {
         <header className="App-header">
           Calendar
         </header>
-        {/* <button onClick={this.writeReminderData(0,"red", "buy bread", "27/01/2021", "Esporles")}>Add reminder</button> */}
         <button onClick={this.togglePopup.bind(this)}>Add reminder</button>
         <div className="calendar-body">
-          <Calendar />
+          <Calendar reminders={this.state.reminders}/>
         </div>
         {this.state.showPopup ? 
           <Popup
@@ -58,13 +78,11 @@ class App extends Component {
 
 class Calendar extends Component {
   render(){
-    for(let month of mockYear.months){
       return(
         <div>
-          <Month month={month}/>
+          <Month reminders={this.props.reminders}/>
         </div>
       )
-    }
   }
 }
 
@@ -95,6 +113,9 @@ class Month extends Component{
     }
     return <div className="days row">{days}</div>;
   }
+  /**
+   * Renders each cell of the month
+   */
   renderCells(){
     const { currentMonth, selectedDate } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
@@ -109,6 +130,7 @@ class Month extends Component{
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = dateFns.format(day, dateFormat);
+        let reminders = this.getDayReminders(day);
         const cloneDay = day;
         days.push(
           <div
@@ -121,7 +143,7 @@ class Month extends Component{
             onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
           >
             <span className="number">{formattedDate}</span>
-            {/* <span className="bg">{formattedDate}</span> */}
+            <div>{reminders}</div>
           </div>
         );
         day = dateFns.addDays(day, 1);
@@ -135,35 +157,30 @@ class Month extends Component{
     }
     return <div className="month-body">{rows}</div>;
   }
+  getDayReminders(day){
+    let reminders = [];
+    for(let r of this.props.reminders) {
+      let reminderDate = new Date(r.when).getDate();
+      if(reminderDate === day.getDate()){
+        reminders.push(
+          <span className="reminder">{r.description}<br/></span>
+        );
+      }
+    }
+    return reminders;
+  }
   render(){
-    // const month = this.props.month.month;
-    // const days = this.props.month.days.map(day => {
-    //   return(
-    //     <div key={day.day} className="day">
-    //       <Day day={day}/>
-    //     </div>
-
-    //   )
-    // })
     return(
       <div className="month">
         {this.renderHeader()}
         {this.renderDays()}
         {this.renderCells()}
-        {/* <div className="weekdays">
-          <div>Monday</div>
-          <div>Tuesday</div>
-          <div>Wednesday</div>
-          <div>Thursday</div>
-          <div>Friday</div>
-          <div>Saturday</div>
-          <div>Sunday</div>
-        </div>
-        <div className="month-days">{days}</div> */}
       </div>
     )
   }
 }
+
+// Components NOT in use /////////////////////
 
 class Day extends Component {
   render(){
@@ -192,6 +209,8 @@ class Event extends Component {
     )
   }
 }
+
+///////////////////////////////////////////////
 
 class Popup extends Component {
   render() {
