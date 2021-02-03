@@ -10,111 +10,43 @@
   color: white;
 }
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
-/************* My real CSS **********************/
-.month{
-  display:flex;
-  flex-direction:column;
-}
-/* .monthName{
-  margin-bottom: 1em;
-}
-.weekdays{
-  display:flex;
-  justify-content:space-around;
-}
-.month-days{
-  display:flex;
-  flex-wrap: wrap;
-} */
-.month-body{
-  display:flex;
-  flex-direction: column;
-}
-.day-name{
-  min-width: 190px;
-}
-.row{
-  display:flex;
-  justify-content: space-evenly;
-}
-.cell{
-  min-width:190px;
-  height:195px;
-}
-.day{
-  border-left:1px solid rgb(191, 192, 204);
-  border-bottom:1px solid rgb(191, 192, 204);
-} 
-.day-disabled{
-  border-left:1px solid rgb(27, 27, 27);
-  border-bottom:1px solid rgb(191, 192, 204);
-  /* border-bottom:1px solid rgb(46, 46, 46); */
-}
-.day-selected{
-  /* border-left:1px solid red;
-  border-bottom:1px solid red; */
-  border-bottom:1px solid rgb(191, 192, 204);
-  background-color: rgb(191, 192, 204);
-  color: #282c34;
-}
-.popup {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  background-color: rgba(0,0,0, 0.5);
-}
-.popup_inner {
-  position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 25%;
-  /* bottom: 25%; */
-  padding-bottom:2em;
-  margin: auto;
-  background: white;
+button.add-reminder{
+  max-width:126px;
+  display:inline-block;
+  padding:0.35em 1.2em;
+  border:0.1em solid #282c34;
+  margin:0 0.3em 0.3em 0;
+  border-radius:0.12em;
+  box-sizing: border-box;
+  text-decoration:none;
+  /* font-family:'Roboto',sans-serif; */
+  font-weight:300;
   color:#282c34;
-  border-radius: 5px;
+  text-align:center;
+  transition: all 0.2s;
 }
-.popup-form{
-  display:flex;
-  flex-direction:column;
-  align-items: center;
+button.add-reminder:hover{
+  color:#000000;
+  background-color:#FFFFFF;
 }
-.input{
-  max-width: 250px;
-  min-width: 200px;
-  margin:1em;
+@media all and (max-width:30em){
+  button.add-reminder{
+    display:block;
+    margin:0.4em auto;
+  }
 }
+/* .add:before, .add:after{
+  position: absolute;
+  left:0.75em;
+  content: ' ';
+  height: 14px;
+  width: 2px;
+  background-color: #282c34;
+}
+
+.add:before{
+  transform:rotate(90deg);
+}
+.add:after{ */
+  /* transform:rotate(-90deg); */
+/*}*/

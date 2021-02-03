@@ -1,0 +1,38 @@
+.monthName{
+    /**/
+}
+.month{
+    display:flex;
+    flex-direction:column;
+  }
+.month-body{
+    display:flex;
+    flex-direction: column;
+}
+.day-name{
+    min-width: 190px;
+}
+.row{
+    display:flex;
+    justify-content: space-evenly;
+}
+.cell{
+    width: calc(100%/7);
+    height:150px;
+}
+.day{
+    border-left:1px solid rgb(191, 192, 204);
+    border-bottom:1px solid rgb(191, 192, 204);
+} 
+.day-disabled{
+    border-left:1px solid rgb(27, 27, 27);
+    border-bottom:1px solid rgb(191, 192, 204);
+    /* border-bottom:1px solid rgb(46, 46, 46); */
+}
+.day-selected{
+    /* border-left:1px solid red;
+    border-bottom:1px solid red; */
+    border-bottom:1px solid rgb(191, 192, 204);
+    background-color: rgb(191, 192, 204);
+    color: #282c34;
+}

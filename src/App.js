@@ -1,8 +1,8 @@
 import './App.css';
 import { Component } from 'react';
 
-import Popup from './components/popup';
-import Calendar from './components/calendar'
+import Popup from './components/popup/popup';
+import Calendar from './components/calendar/calendar'
 
 class App extends Component {
   constructor(){
@@ -31,8 +31,10 @@ class App extends Component {
    * @param formResult data from the "new reminder" popup
    */
   sendData(formResult){
-    const newReminderKey = this.props.firebase.database().ref().child('reminders').push().key;
-    this.writeReminderData(newReminderKey,formResult.color,formResult.description, formResult.when, formResult.where)
+    if(formResult.description){
+      const newReminderKey = this.props.firebase.database().ref().child('reminders').push().key;
+      this.writeReminderData(newReminderKey,formResult.color,formResult.description, formResult.when, formResult.where)
+    }
     this.setState({
       showPopup: !this.state.showPopup
     });
@@ -78,10 +80,10 @@ class App extends Component {
   render(){
     return (
       <div className="App">
-        <header className="App-header">
+        {/* <header className="App-header">
           Calendar
-        </header>
-        <button onClick={this.togglePopup.bind(this)}>Add reminder</button>
+        </header> */}
+        <button className="add-reminder" onClick={this.togglePopup.bind(this)}>+ Add reminder</button>
         <div className="calendar-body">
           <Calendar reminders={this.state.reminders}/>
         </div>

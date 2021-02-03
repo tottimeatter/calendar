@@ -1,10 +1,12 @@
 import { Component } from 'react';
+import './popup.css'
 
 class Popup extends Component {
     render() {
       return (
         <div className='popup'>
           <div className='popup_inner'>
+          <div className="closePopup" onClick={this.props.closePopup}><div className="close"></div></div>
             <h2>{this.props.text}</h2>
             <PopUpForm closePopup={this.props.closePopup}/>
           {/* <button onClick={this.props.closePopup}>Create reminder</button> */}
@@ -24,7 +26,6 @@ class Popup extends Component {
         color: "#000000"
       }
       this.handleInputChange = this.handleInputChange.bind(this);
-      console.log(this.state.when)
     }
     handleInputChange(event){
       const target = event.target;
