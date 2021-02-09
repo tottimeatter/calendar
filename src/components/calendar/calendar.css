@@ -1,7 +1,28 @@
 .month{
     display:flex;
     flex-direction:column;
-  }
+}
+.month-header{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+}
+.month-header button{
+    background-color: #282c34;
+    color: white;
+    margin: 1em;
+    border:0;
+    height: 25px;
+}
+.month-header button:hover{
+    background-color: white;
+    color: #282c34;
+    border: 0;
+    cursor:pointer;
+}
+.month-header button:active{
+    border:0;
+}
 .month-body{
     display:flex;
     flex-direction: column;
@@ -41,10 +62,6 @@
 .reminder{
     display:flex;
     align-items: center;
-    /*font-size: 0.5em;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; */
 }
 .reminder-color{
     width:5px;

@@ -20,11 +20,30 @@ class Month extends Component{
         selectedDate: new Date()
         };
     }
+    previousMonth(){
+        const previousMonth = dateFns.subDays(dateFns.startOfMonth(this.state.currentMonth), 1);
+        this.setState({
+            currentMonth: previousMonth
+        })
+    }
+    nextMonth(){
+        const nextMonth = dateFns.addDays(dateFns.endOfMonth(this.state.currentMonth), 1);
+        this.setState({
+            currentMonth: nextMonth,
+        })
+    }
     /**
      * Renders the header of the page
      */
     renderHeader(){
-        return <h1 className="monthName">{dateFns.format(this.state.currentMonth, 'MMMM yyyy')}</h1>
+        // this.nextMonth();
+        return (
+            <div className="month-header">
+                <button onClick={() => this.previousMonth()}>Previous month</button>
+                <h1 className="monthName">{dateFns.format(this.state.currentMonth, 'MMMM yyyy')}</h1>
+                <button onClick={this.nextMonth.bind(this)}>Next month</button>
+            </div>
+        )
     }
     /**
      * Renders days (name) of the current week
