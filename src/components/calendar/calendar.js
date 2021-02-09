@@ -6,7 +6,7 @@ class Calendar extends Component {
     render(){
         return(
           <div>
-            <Month reminders={this.props.reminders}/>
+            <Month reminders={this.props.reminders} openReminder={(r) => this.props.openReminder(r)}/>
           </div>
         )
     }
@@ -69,7 +69,7 @@ class Month extends Component{
                         : dateFns.isSameDay(day, selectedDate) ? "-selected" : ""
                     }`}
                     key={day}
-                    onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
+                    // onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
                 >
                     <span className="number">{formattedDate}</span>
                     <div>{reminders}</div>
@@ -96,7 +96,14 @@ class Month extends Component{
         let reminderDate = new Date(r.when).getDate() + "/" + new Date(r.when).getMonth();
         if(reminderDate === (day.getDate() + "/" + day.getMonth())){
             reminders.push(
-            <span className="reminder">{r.description}<br/></span>
+                <div key ={r.id} className="reminder" onClick={() => this.props.openReminder(r)}>
+                    <div className="reminder-color" style={
+                        {
+                            backgroundColor:r.color,
+                        }
+                    } ></div>
+                    <div className="reminder-description">{r.description}</div><br/>
+                </div>
             );
         }
         }

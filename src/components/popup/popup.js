@@ -6,9 +6,9 @@ class Popup extends Component {
       return (
         <div className='popup'>
           <div className='popup_inner'>
-          <div className="closePopup" onClick={this.props.closePopup}><div className="close"></div></div>
+          <div className="closePopup" onClick={this.props.reminder ? this.props.closeReminder : this.props.closePopup}><div className="close"></div></div>
             <h2>{this.props.text}</h2>
-            <PopUpForm closePopup={this.props.closePopup}/>
+            {this.props.reminder ? <PopUpReminder reminder={this.props.reminder}/> : <PopUpForm closePopup={this.props.closePopup}/>}
           {/* <button onClick={this.props.closePopup}>Create reminder</button> */}
           </div>
         </div>
@@ -72,6 +72,16 @@ class Popup extends Component {
         </form>
       )
      }
+  }
+
+  class PopUpReminder extends Component {
+    render(){
+      return (
+        <div>
+          <span>{this.props.reminder.description}</span>
+        </div>
+      )
+    }
   }
 
   export default Popup;

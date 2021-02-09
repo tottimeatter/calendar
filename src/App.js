@@ -9,7 +9,9 @@ class App extends Component {
     super();
     this.state = {
       showPopup: false,
-      reminders: []
+      showReminder:false,
+      reminders: [],
+      reminder: null
     }
   }
   /**
@@ -19,7 +21,7 @@ class App extends Component {
     this.getData()
   }
   /**
-   * Open close the popup
+   * Open the popup
    */
   togglePopup() {
     this.setState({
@@ -47,8 +49,9 @@ class App extends Component {
     const remindersRef = this.props.firebase.database().ref('reminders');
     remindersRef.once('value').then(snapshot => {
       snapshot.forEach((childSnapshot) => {
+        // debugger
         DBreminders.push({
-          id: childSnapshot.val().id,
+          id: childSnapshot.val().key,
           color: childSnapshot.val().color,
           when: childSnapshot.val().when,
           where: childSnapshot.val().where,
@@ -74,7 +77,22 @@ class App extends Component {
       description: description,
       when: when,
       where: where
+    }).then(() => {
+      this.getData();
     });
+  }
+
+  openReminder(r){
+    this.setState({
+      showReminder: !this.state.showReminder,
+      reminder: r
+    })
+    console.log("Reminder clicked")
+  }
+  closeReminder(){
+    this.setState({
+      showReminder:!this.state.showReminder,
+    })
   }
 
   render(){
@@ -85,7 +103,7 @@ class App extends Component {
         </header> */}
         <button className="add-reminder" onClick={this.togglePopup.bind(this)}>+ Add reminder</button>
         <div className="calendar-body">
-          <Calendar reminders={this.state.reminders}/>
+          <Calendar reminders={this.state.reminders} openReminder={(r) => this.openReminder(r)}/>
         </div>
         {this.state.showPopup ? 
           <Popup
@@ -93,6 +111,12 @@ class App extends Component {
             closePopup={this.sendData.bind(this)}
           />
           : null
+        }
+        {
+          this.state.showReminder ? 
+          <Popup text='Reminder'
+          reminder={this.state.reminder}
+          closeReminder={this.closeReminder.bind(this)}/> : null
         }
       </div>
     );
