@@ -4,6 +4,8 @@ import { Component } from 'react';
 import Popup from './components/popup/popup';
 import Calendar from './components/calendar/calendar'
 
+import AddIcon from './assets/add-black-18dp.svg';
+
 class App extends Component {
   constructor(){
     super();
@@ -51,7 +53,7 @@ class App extends Component {
       snapshot.forEach((childSnapshot) => {
         // debugger
         DBreminders.push({
-          id: childSnapshot.val().key,
+          id: childSnapshot.key,
           color: childSnapshot.val().color,
           when: childSnapshot.val().when,
           where: childSnapshot.val().where,
@@ -94,6 +96,17 @@ class App extends Component {
       showReminder:!this.state.showReminder,
     })
   }
+  deleteReminder(reminder){
+    console.log("About to remove reminder: " + reminder.id)
+    this.props.firebase.database().ref('reminders/' + reminder.id).remove().then(() => {
+      console.log("Data removed: " + reminder.description)
+      this.setState({
+        showReminder:!this.state.showReminder,
+        reminder: null
+      })
+      this.getData();
+    })
+  }
 
   render(){
     return (
@@ -101,10 +114,12 @@ class App extends Component {
         {/* <header className="App-header">
           Calendar
         </header> */}
-        <button className="add-reminder" onClick={this.togglePopup.bind(this)}>+ Add reminder</button>
         <div className="calendar-body">
           <Calendar reminders={this.state.reminders} openReminder={(r) => this.openReminder(r)}/>
         </div>
+        <button className="add-reminder" onClick={this.togglePopup.bind(this)}>
+          <img src={AddIcon} alt="New reminder"/>
+        </button>
         {this.state.showPopup ? 
           <Popup
             text='New reminder'
@@ -116,7 +131,8 @@ class App extends Component {
           this.state.showReminder ? 
           <Popup text='Reminder'
           reminder={this.state.reminder}
-          closeReminder={this.closeReminder.bind(this)}/> : null
+          closeReminder={this.closeReminder.bind(this)}
+          deleteReminder={() => this.deleteReminder(this.state.reminder)}/> : null
         }
       </div>
     );

@@ -50,3 +50,11 @@
   .close:after {
     transform: rotate(-45deg);
   }
+  button.delete-reminder{
+    height:50px;
+    background-color:firebrick;
+    color: white;
+    border:0.1em solid white;
+    font-size:large;
+    border-radius: 0.5em;
+  }

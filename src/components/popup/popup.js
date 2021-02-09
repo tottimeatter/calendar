@@ -8,7 +8,7 @@ class Popup extends Component {
           <div className='popup_inner'>
           <div className="closePopup" onClick={this.props.reminder ? this.props.closeReminder : this.props.closePopup}><div className="close"></div></div>
             <h2>{this.props.text}</h2>
-            {this.props.reminder ? <PopUpReminder reminder={this.props.reminder}/> : <PopUpForm closePopup={this.props.closePopup}/>}
+            {this.props.reminder ? <PopUpReminder reminder={this.props.reminder} deleteReminder={this.props.deleteReminder}/> : <PopUpForm closePopup={this.props.closePopup}/>}
           {/* <button onClick={this.props.closePopup}>Create reminder</button> */}
           </div>
         </div>
@@ -78,7 +78,10 @@ class Popup extends Component {
     render(){
       return (
         <div>
-          <span>{this.props.reminder.description}</span>
+          <div>
+            <span>{this.props.reminder.description}</span> 
+          </div>
+          <button className="delete-reminder" onClick={this.props.deleteReminder}>Delete</button>
         </div>
       )
     }
