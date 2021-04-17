@@ -26,6 +26,7 @@ class Popup extends Component {
         color: "#000000"
       }
       this.handleInputChange = this.handleInputChange.bind(this);
+      this.handleBlur = this.handleBlur.bind(this);
     }
     handleInputChange(event){
       const target = event.target;
@@ -35,6 +36,24 @@ class Popup extends Component {
       this.setState({
         [name]: value
       });
+    }
+    handleBlur(event){
+      const data = null;
+
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+
+      xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+          console.log(this.responseText);
+        }
+      });
+      console.log(event.target.value)
+      xhr.open("GET", `https://community-open-weather-map.p.rapidapi.com/weather?q=${event.target.value}%2C%20es&lat=0&lon=0&callback=test&id=2172797&lang=null&units=%22metric%22&mode=xml%2C%20html`);
+      xhr.setRequestHeader("x-rapidapi-key", "8f44acada3msh175d13ed341cd8ap1fe062jsn64f16618a687");
+      xhr.setRequestHeader("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com");
+
+      xhr.send(data);
     }
     handleSubmit = (event) => {
       event.preventDefault();
@@ -65,7 +84,8 @@ class Popup extends Component {
           <label>🌍 Where?</label>
           <input name="where" 
             value={this.state.where} 
-            onChange={this.handleInputChange} 
+            onChange={this.handleInputChange}
+            onBlur={this.handleBlur}
             className="input" 
             type="text"/>
           <input type="submit" value="New reminder"/>
